@@ -1,0 +1,83 @@
+User Requirements
+=================
+
+Description
+-----------
+
+This product simulate a toy robot that is free to move on a table top.
+The robot is controlled by a set of commands and must ignore commands that
+will cause it to fall from the table top.
+The robot must also ignore all invalid commands.
+
+Requirements
+------------
+R1. From Brief	: The robot may not fall from the table top. It must ignore any command
+		  that will cause it to fall.
+
+R2. From Brief	: The first valid command to a robot must be a valid PLACE command, any
+		  pre-seeding commands is considered invalid and must be ignored.
+
+R3. From Brief	: The table top must be 5 x 5 units in size, with position (0, 0) in the
+		  SOUTH WEST corner of the table.
+
+R4. From Brief	: The robot must understand 5 commands (PLACE, MOVE, LEFT, RIGHT, REPORT).
+
+R5. From Brief	: The MOVE command will more the robot 1 unit it the direction it is
+		  facing (Except when that will cause the robot to fall).
+
+R6. Assumed	: The robot can face in one of 4 direction. consider a person sitting at
+		  a table and a robot on the table.
+		  -> when the robot face EAST it will face to the Right of the person.
+		  -> When the robot face NORTH it will face away from the person.
+		  -> when the robot face WEST it will face to the left of the person.
+		  -> When the robot face SOUTH it will face towards the person.
+
+R7. Assumed	: The Robot can only be placed on exact coordinates for example (0, 0) or
+		  (2, 4) and not on partials like (1.5, 2.3)
+
+R8. From Brief	: Turning the robot with LEFT or RIGHT commands will only effect the direction
+		  the robot is facing in, not the location.
+
+R9. Implied	: The LEFT command will rotate the robot anti-clock wise. for example from
+		  NORTH to WEST
+
+R10. Implied	: The RIGHT command will rotate the robot clock wise. for example from 
+		  EAST to SOUTH
+
+R11. Implied	: Any unknown or incorrectly formed command must be ignored.
+
+R12. From Brief : The toy robot will receive commands from the console. To pass in an input file 
+		  of commands, redirect stdin ie. "node ToyRobot.js < input.txt".
+
+R13. Assumed	: Every line will contain only one command.
+
+R14. Assumed	: Any additional data after a valid command is ignored.
+
+R15. Assumed	: The PLACE command is the only command requiring parameters.
+		  the syntax for this command is 'PLACE' x  y  f
+		  x is a digit 0 to 4 
+		  y is a digit 0 to 4
+		  f is one of NORTH, EAST, SOUTH or WEST
+		  The parameters will be separated by exactly one space or one comma.
+
+R16. Implied	: The REPORT command will print the current state of the Robot to 
+		  standard output in the following format 'x ',' y ',' f
+		  where x, y and f is the same as for R15.
+
+R17. Technical	: The application will create a log file that write events to the Log allowing
+		  users to gain insight of the internal activity of the application. See design
+		  notes for more detail about what is expected to be logged in this.
+
+Non Requirements
+----------------
+This is areas of clarification. It is not requirements, but serve to clarify intent or remove
+ambiguity.
+
+* If a REPORT command is issued and was not pre-seeded by a valid PLACE command the command
+  will be ignored according to requirement R11. This may be confusing to the user and an
+  improvement may be considered where an invalid REPORT command will rather print 'Not placed'
+
+* Multiple PLACE commands in a single file will not place more than one robot. but will instead
+  move the current robot if the command is valid an will not cause the robot to fall.
+
+* No permanent data storage is required for the application.

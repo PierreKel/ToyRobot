@@ -1,0 +1,69 @@
+Design Notes
+============
+
+Some Design Assumptions
+-----------------------
+* The application will only host one robot at a time and have only one table. This is
+  a single tier application.
+
+
+* The execution of the commands will manipulate the Robot data and will be constraint
+  by data from the Table. but there is no user feedback except when the REPORT command
+  is executed. to see what happened during execution inspect the log file.
+
+Log file information
+--------------------
+The creation of a log file is a technical requirement and the purpose is to enhance
+debugging and support of the application.
+
+The following situations will be logged to the log file.
+* When a command is invalid -> Warning
+* When a command is ignored because it will cause the robot to fall -> Warning
+* When a command is ignored because a valid PLACE command was not yet executed -> Warning
+* When a command was Successful -> Information.
+
+The following objects need to exist in the application.
+Table:
+  The Table object contain information about the limits that the robot can move in.
+
+Robot:
+  The Robot object will contain information about the current state of the robot.
+  Position on the table.
+  Direction the robot is facing in.
+  NOTE: this object will only be created after the first PLACE command.
+
+Action:
+  Every known action like PLACE, MOVE, ... will be created as an action.
+
+Command:
+  a Command object will be created for every valid command read.
+  the command object will represent the action to take and the additional parameters
+  if any to supply to the action.
+
+InputReader
+  The Input reader will read the commands from standard input and pass them to
+  the executor one by one.
+
+Executor:
+  The Executor will receive commands from the Input Reader and will construct
+  Commands that is then executed against the application context (table and robot).
+
+Feedback:
+  The Feedback Object will be responsible for presenting feedback to the user.
+  The only feedback that will be presented if fatal error messages. and normal output
+  from the REPORT command.
+
+Logger:
+  The Logger Object is responsible for writing entries to the log file.
+
+Context:
+  The Context object is the container that glue everything to-gather.
+  It keep references to the table, robot, logger and feedback objects. and are used
+  by the executor and command objects.
+  
+ The ToyRobot.js file will contain the main executable Code.
+ The application can be started interactively with the following command
+ node ToyRobot.js
+ The application can be instructed to execute a list of commands from an input file as follow.
+ node ToyRobot.js < input.txt
+ 
